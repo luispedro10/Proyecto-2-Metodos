@@ -92,8 +92,6 @@ b3 = np.random.rand(100)
 solution3 = gauss_jordan(A3, b3)
 print('Solución sistema 100x100:', solution3)
 
-
-
 #################    COMPARACION CON OTROS METODOS:######################
 
 ### Comparacion de la matriz A1 ##
@@ -138,8 +136,6 @@ print('')
 
 #Comparacion con Eliminacion Gaussiana:
 
-from scipy.linalg import lu_solve, lu_factor
-
 # Utilizando las matrices del ejemplo 2
 lu, piv = lu_factor(A2)
 solution_gaussian_elimination = lu_solve((lu, piv), b2)
@@ -154,9 +150,6 @@ print('Solución por factorización PA-LU:', solution_pa_lu)
 
 
 #Comparacion con Gauus-Seidel
-
-from scipy.linalg import solve
-
 # Utilizando las matrices del ejemplo 2
 solution_gauss_seidel = solve(A2, b2)
 print('Solución por Gauss-Seidel:', solution_gauss_seidel)
@@ -165,13 +158,53 @@ print('Solución por Gauss-Seidel:', solution_gauss_seidel)
 
 
 #ANALISIS DE ERROR
-
 import time
 
-# Ejemplo con el método gauss_jordan
+# Define tus sistemas de ecuaciones lineales (matriz A y vector b)
+A = np.random.rand(100, 100)
+b = np.random.rand(100)
+
+# Solución con Gauss-Jordan
 start_time = time.time()
-solution_gj = gauss_jordan(A1, b1)
+result_gauss_jordan = gauss_jordan(A.copy(), b.copy())
 end_time = time.time()
-print('Error Gauss-Jordan:', np.linalg.norm(b1 - A1.dot(solution_gj)))
-print('Tiempo Gauss-Jordan:', end_time - start_time)
+error_gauss_jordan = np.linalg.norm(np.dot(A, result_gauss_jordan) - b)
+
+# Imprimir resultados y errores
+print("\n\nResultado de Gauss-Jordan:", result_gauss_jordan)
+print("Error de Gauss-Jordan:", error_gauss_jordan)
+print("Tiempo de ejecución de Gauss-Jordan:", end_time - start_time)
+
+# Solución con Eliminación Gaussiana
+start_time = time.time()
+result_elimination = np.linalg.solve(A.copy(), b.copy())
+end_time = time.time()
+error_elimination = np.linalg.norm(np.dot(A, result_elimination) - b)
+
+print("\nResultado de Eliminación Gaussiana:", result_elimination)
+print("Error de Eliminación Gaussiana:", error_elimination)
+print("Tiempo de ejecución de Eliminación Gaussiana:", end_time - start_time)
+
+# Solución con PA-LU
+lu, piv = lu_factor(A.copy())
+start_time = time.time()
+result_pa_lu = lu_solve((lu, piv), b.copy())
+end_time = time.time()
+error_pa_lu = np.linalg.norm(np.dot(A, result_pa_lu) - b)
+
+print("\nResultado de PA-LU:", result_pa_lu)
+print("Error de PA-LU:", error_pa_lu)
+print("Tiempo de ejecución de PA-LU:", end_time - start_time)
+
+# Solución con Gauss-Seidel (requiere una implementación previa)
+start_time = time.time()
+result_gauss_seidel = solve(A.copy(), b.copy())
+end_time = time.time()
+error_gauss_seidel = np.linalg.norm(np.dot(A, result_gauss_seidel) - b)
+
+print("\nResultado de Gauss-Sediel:", result_gauss_seidel)
+print("Error de Gauss-Sediel:", error_gauss_seidel)
+print("Tiempo de ejecución de Gauss-seidel:", end_time - start_time)
+
+
 
